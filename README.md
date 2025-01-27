@@ -5,6 +5,7 @@
 Use [Bright Data's CAPTCHA Solver](https://brightdata.com/products/web-unlocker/captcha-solver) to effortlessly solve CAPTCHAs like reCAPTCHA, hCaptcha, PX Captcha, GeeTest, and more with user emulation, fingerprint management, and a powerful proxy infrastructure. 
 Our CAPTCHA Solver is a built-in feature for our [Scraping Browser](https://brightdata.com/products/scraping-browser) and [Web Unlocker](https://brightdata.com/products/web-unlocker).
 
+Learn more about the custom CDP functions [here](https://docs.brightdata.com/scraping-automation/scraping-browser/cdp-functions/custom#captcha-solver).
 
 
 ## Features  
@@ -50,7 +51,7 @@ Bright Data’s CAPTCHA Solver is integrated into the **Scraping Browser** and *
 
 ## **Automatic CAPTCHA Solving**  
 
-Use the `Captcha.solve` command to detect and resolve CAPTCHAs automatically.
+Use the `Captcha.solve` command to detect and resolve CAPTCHAs automatically. You can view the Python version [here](https://docs.brightdata.com/scraping-automation/scraping-browser/cdp-functions/custom#captcha-solver).
 
 ### Command Overview  
 
