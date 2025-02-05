@@ -65,13 +65,18 @@ Captcha.solve({
 ### Example: NodeJS (Puppeteer)
 
 ```javascript
-const page = await browser.newPage();
-const client = await page.target().createCDPSession();
-await page.goto('https://site-with-captcha.com');
-
-// Automatically solve CAPTCHA  
-const { status } = await client.send('Captcha.solve', { detectTimeout: 30000 });   
-console.log(`CAPTCHA solve status: ${status}`);
+(async () => {
+  const page = await browser.newPage();
+  const client = await page.target().createCDPSession();
+  await page.goto('https://site-with-captcha.com');
+  try {
+    // Automatically solve CAPTCHA  
+    const { status } = await client.send('Captcha.solve', { detectTimeout: 30000 });
+    console.log(`CAPTCHA solve status: ${status}`);
+  } catch (error) {
+    console.error('Error solving CAPTCHA:', error);
+  }
+})();
 ```
 
 ### Events Monitoring  
@@ -86,11 +91,17 @@ You can listen for specific CAPTCHA-solving events to handle advanced use cases:
 #### NodeJS Example - Listening for Events
 
 ```javascript
-const client = await page.target().createCDPSession();   
-await new Promise((resolve, reject) => {   
-  client.on('Captcha.solveFinished', resolve);   
-  client.on('Captcha.solveFailed', () => reject(new Error('CAPTCHA solving failed')));   
-  setTimeout(reject, 300000, new Error('CAPTCHA solve timeout'));  
+const client = await page.target().createCDPSession();
+await new Promise((resolve, reject) => {
+  client.on('Captcha.solveFinished', (result) => {
+    if (result.status === 'success') {
+      resolve();
+    } else {
+      reject(new Error('CAPTCHA solving failed with status: ' + result.status));
+    }
+  });
+  client.on('Captcha.solveFailed', () => reject(new Error('CAPTCHA solving failed')));
+  setTimeout(() => reject(new Error('CAPTCHA solve timeout')), 300000); // Delay set to 5min, consider of changing it
 });
 ```
 
@@ -121,12 +132,18 @@ Captcha.setAutoSolve({
 ### Manually Solve CAPTCHAs
 
 ```javascript
-const page = await browser.newPage();  
-const client = await page.target().createCDPSession();
-await client.send('Captcha.setAutoSolve', { autoSolve: false });  
-await page.goto('https://site-with-captcha.com');
-const { status } = await client.send('Captcha.solve', { detectTimeout: 30000 });
-console.log('CAPTCHA solve status:', status);
+(async () => {
+  const page = await browser.newPage();
+  const client = await page.target().createCDPSession();
+  await client.send('Captcha.setAutoSolve', { autoSolve: false });
+  await page.goto('https://site-with-captcha.com');
+  try {
+    const { status } = await client.send('Captcha.solve', { detectTimeout: 30000 });
+    console.log('CAPTCHA solve status:', status);
+  } catch (error) {
+    console.error('Error solving CAPTCHA:', error);
+  }
+})();
 ```
 
 ## Supported CAPTCHA Types  
